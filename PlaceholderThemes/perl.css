@@ -1,0 +1,57 @@
+/*
+	@theme perl Placeholder
+	@placeholder perl
+*/
+
+@base {
+	color: #333;
+	background-color: #fff;
+}
+
+perl {
+	spell-check: disabled;
+	color: #333;
+}
+
+perl variable, string.double variable {
+	color: #4F9FCF;
+	newcolor: #6FBFFF;
+}
+
+perl variable > group {
+	color: #3482da;
+	background-color: #f2fbfe;
+}
+
+perl.definition{
+	color: #d44950;
+}
+
+perl name {
+	color: #4f9fcf;
+	newcolor: #6fbfff;
+}
+
+perl modifier {
+	color: #d48080;
+}
+
+perl include {
+	color: #555;
+	background-color: #f8f8f8;
+	font-style: italic;
+}
+
+perl identifier.function {
+	color: #699d36;
+	font-weight: bold;
+}
+
+perl integer {
+    color: #6700b9;
+	background-color: #fbf2fe;
+}
+
+perl perlDoc.keyword {
+	color: #ad91ba;
+}

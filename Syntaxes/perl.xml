@@ -84,29 +84,7 @@
 			    <capture number="1" name="delimiter.separator.hash.comment.begin" />
 			    <capture number="3" name="content" />
 	        </zone>
-	        <zone name="metadata.comment.documentation">
-				<starts-with>
-					<expression>/(\*)+</expression>
-					<capture number="0" name="delimiter.separator.slash.asterisk.comment.begin"/>
-				</starts-with>
-				<ends-with>
-					<expression>(\*)+/</expression>
-					<capture number="0" name="delimiter.separator.asterisk.slash.comment.end"/>
-				</ends-with>
-			</zone>
-			
-			<zone name="metadata.comment.block">
-				<starts-with>
-					<expression>(/\*)</expression>
-					<capture number="1" name="delimiter.separator.slash.single-asterisk.comment.begin"/>
-				</starts-with>
-				<ends-with>
-					<expression>(\*/)</expression>
-					<capture number="1" name="delimiter.separator.slash.single-asterisk.comment.end"/>
-				</ends-with>
-			</zone>
 	    </collection>
-	    
 	    
 	    <!-- Literals -->
 	    <collection name="literal.string">
@@ -136,7 +114,7 @@
                 </starts-with>
                 <ends-with>
                     <expression>"</expression>
-                    <capture number="0" name="delimiter.balanced.quote.double.begin"/>
+                    <capture number="0" name="delimiter.balanced.quote.double.end"/>
                 </ends-with>
                 <subzones>
                     <include collection="identifier.variable" />
@@ -151,7 +129,7 @@
             
             <zone name="literal.string.unquoted.heredoc">
                 <starts-with>
-                    <expression>(&lt;&lt;&lt;-?)(\w+)</expression>
+                    <expression>(&lt;&lt;-?)(\w+)</expression>
                 </starts-with>
                 <starts-with>
                     <expression>\2</expression>
@@ -274,12 +252,17 @@
 			</zone>
             
             <zone name="keyword.modifier.scope">
-            	<expression>\b(my|local)\b</expression>
+            	<expression>my</expression>
             </zone>
             
 			<zone name="keyword.constant.other">
 				<expression>[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*</expression>
 			</zone>
+
+			<zone name="keyword.constant.filehandles">
+				<expression>(&lt;)?[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*(&gt;)?</expression>
+			</zone>
+
 		</collection>
 		
 		<!-- Identifiers -->
@@ -305,11 +288,31 @@
 		        <expression>(\@)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)</expression>
 		        <capture number="1" name="operator.atat-sign.variable.begin" />
 		    </zone>
+		    <zone name="identifier.variable.function">
+		        <expression>(\&amp;)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)</expression>
+		        <capture number="1" name="operator.amp-sign.variable.begin" />
+		    </zone>
 		</collection>
 		
 		<collection name="identifier.function">
 		    <include collection="identifier.function.support" />
 		    
+			<zone name="identifier.function">
+			    <starts-with>
+			        <expression>(\&amp;)?([A-Za-z_][A-Za-z_0-9]*)(\()</expression>
+			        <capture number="1" name="delimiter.pointer" />
+			        <capture number="2" name="name" />
+			        <capture number="3" name="delimiter.balanced.parenthesis.begin" />
+			    </starts-with>
+				<ends-with>
+				    <expression>\)</expression>
+				    <capture number="0" name="delimiter.balanced.parenthesis.end" />
+				</ends-with>
+				<subzones>
+				    <include collection="identifier.function.subzones" />
+				</subzones>
+			</zone>
+
 		    <zone name="identifier.function.object.method">
 			    <starts-with>
 			        <expression>(->)([A-Za-z_][A-Za-z_0-9]*)(\()</expression>
@@ -343,31 +346,18 @@
 				</subzones>
 			</zone>
 			
-			<zone name="identifier.function">
-			    <starts-with>
-			        <expression>[A-Za-z_][A-Za-z_0-9]*(\()</expression>
-			        <capture number="1" name="delimiter.balanced.parenthesis.begin" />
-			    </starts-with>
-				<ends-with>
-				    <expression>\)</expression>
-				    <capture number="0" name="delimiter.balanced.parenthesis.end" />
-				</ends-with>
-				<subzones>
-				    <include collection="identifier.function.subzones" />
-				</subzones>
-			</zone>
 		</collection>
 		
 		<collection name="identifier.function.subzones">
-            <include collection="language" />
-        </collection>
+	        <include collection="language" />
+    </collection>
 		
 		<collection name="identifier.variable.parameter">
 		    <include zone="identifier.variable.local" />
 		</collection>
 		
 		<collection name="identifier.class">
-		    <!--<include collection="identifier.class.support" />-->
+		    <include collection="identifier.class.support" />
 			<zone name="identifier.class">
 				<expression>(?i)\b(new)\s+(?:(\$[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)|(\w+))|(\w+)(?=::)</expression>
 				<capture number="1" name="keyword.constant.new"/>
@@ -382,7 +372,7 @@
         <collection name="container.function">
             <zone name="container.function.magic.parenthesis-delimited">
                 <starts-with>
-                    <expression>((?:(?:final|abstract|public|private|protected|static)\s+)*)(function)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|tostring|clone|set_state|sleep|wakeup|autoload))|(__[a-zA-Z0-9_]+))\s*(\()</expression>
+                    <expression>((?:(?:final|public|private|protected)\s+)*)(sub)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|sleep|autoload))|(__[a-zA-Z0-9_]+))\s*(\()</expression>
                     <capture number="1" name="keyword.modifier.scope" />
                     <capture number="2" name="keyword.definition.function.begin" />
                     <capture number="4" name="name" />
@@ -397,23 +387,22 @@
         		        <expression>(?x)(\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?\b</expression>
         		        <capture number="1" name="delimiter.variable.begin" />
         		    </zone>
-        		    <include collection="metadata.comment" />
+        		      <include collection="metadata.comment" />
         	        <include collection="literal.collection" />
         	        <include collection="literal.keyword" />
-        	        <include collection="identifier.function" />
         	        <include collection="keyword" />
         	        <include collection="identifier.class" />
         	        <include collection="identifier.variable" />
         	        <include collection="literal.string" />
         	        <include collection="literal.numeric" />
-        		    <include collection="operator" />
-        		    <include collection="delimiter" />
+        		      <include collection="operator" />
+        		      <include collection="delimiter" />
                 </subzones>
             </zone>
             
             <zone name="container.function.parenthesis-delimited">
                 <starts-with>
-                    <expression>((?:(?:final|abstract|public|private|protected|static)\s+)*)(function)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|tostring|clone|set_state|sleep|wakeup|autoload))|([a-zA-Z0-9_]+))\s*(\()</expression>
+                    <expression>((?:(?:final|public|private|protected)\s+)*)(sub)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|sleep|autoload))|([a-zA-Z0-9_]+))\s*(\()</expression>
                     <capture number="1" name="keyword.modifier.scope" />
                     <capture number="2" name="keyword.definition.function.begin" />
                     <capture number="5" name="name" />
@@ -428,17 +417,16 @@
         		        <expression>(?x)(\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?\b</expression>
         		        <capture number="1" name="delimiter.variable.begin" />
         		    </zone>
-        		    <include collection="metadata.comment" />
+        		      <include collection="metadata.comment" />
         	        <include collection="literal.collection" />
         	        <include collection="literal.keyword" />
-        	        <include collection="identifier.function" />
         	        <include collection="keyword" />
         	        <include collection="identifier.class" />
         	        <include collection="identifier.variable" />
         	        <include collection="literal.string" />
         	        <include collection="literal.numeric" />
-        		    <include collection="operator" />
-        		    <include collection="delimiter" />
+        		      <include collection="operator" />
+        		      <include collection="delimiter" />
                 </subzones>
             </zone>
         </collection>
@@ -583,6 +571,9 @@
             <zone name="operator.dollar-sign.variable">
                 <expression>\$</expression>
             </zone>            
+            <zone name="operator.amp-sign.variable">
+                <expression>&amp;</expression>
+            </zone>            
             <zone name="operator.comparator">
                 <expression>(!)?(===|==|&lt;|&lt;=|&gt;|&gt;=)</expression>
                 <capture number="1" name="not" />
@@ -638,7 +629,7 @@
             <!-- Array Functions -->
             <zone name="identifier.function.support.array">
                 <starts-with>
-                    <expression>(?i)\b(s(huffle|ort)|n(ext|at(sort|casesort))|c(o(unt|mpact)|urrent)|in_array|u(sort|ksort|asort)|prev|e(nd|xtract)|k(sort|ey|rsort)|a(sort|r(sort|ray_(s(hift|um|plice|earch|lice)|c(h(unk|ange_key_case)|o(unt_values|mbine))|intersect(_(u(key|assoc)|key|assoc))?|diff(_(u(key|assoc)|key|assoc))?|u(n(shift|ique)|intersect(_(uassoc|assoc))?|diff(_(uassoc|assoc))?)|p(op|ush|ad|roduct)|values|key(s|_exists)|f(il(ter|l(_keys)?)|lip)|walk(_recursive)?|r(e(duce|verse)|and)|m(ultisort|erge(_recursive)?|ap))))|r(sort|eset|ange)|m(in|ax))(\()</expression>
+                    <expression>(?i)\b(my|scalar|exists)(\()</expression>
                     <capture number="1" name="name" />
                     <capture number="41" name="delimiter.balanced.parenthesis.begin" />
                 </starts-with>
@@ -668,12 +659,12 @@
                 <!-- File Functions -->
                 <zone name="identifier.function.support.file">
                 	<starts-with>
-                		<expression>(?i)\b((sys_get_temp_dir|copy|t(empnam|mpfile)|u(nlink|mask)|p(close|open)|f(s(canf|tat|eek)|nmatch|close|t(ell|runcate)|ile(_(put_contents|get_contents))?|open|p(utcsv|assthru)|eof|flush|write|lock|read|get(s(s)?|c(sv)?))|r(e(name|a(dfile|lpath)|wind)|mdir)|get_meta_tags|mkdir))(\()</expression>
+                		<expression>(?i)\b((sys_get_temp_dir|copy|t(empnam|mpfile)|u(nlink|mask)|close|open|binmode|print|f(s(canf|tat|eek)|close|t(ell|runcate)|ile(_(put_contents|get_contents))?|p(utcsv|assthru)|eof|flush|write|flock|read|get(s(s)?|c(sv)?))|r(e(name|a(dfile|lpath)|wind)|mdir)|get_meta_tags|mkdir))(\(?)</expression>
                 		<capture number="1" name="name" />
                 		<capture number="18" name="delimiter.balanced.parenthesis.begin" />
                 	</starts-with>
                 	<ends-with>
-                		<expression>\)</expression>
+                		<expression>\)?</expression>
                 	</ends-with>
                 	<subzones>
                 		<include collection="identifier.function.subzones" />
@@ -792,22 +783,6 @@
                 		<expression>(?i)\b((s(trval|ettype)|i(s_(s(calar|tring)|callable|nu(ll|meric)|object|float|array|long|resource|bool)|ntval)|floatval|gettype))(\()</expression>
                 		<capture number="1" name="name" />
                 		<capture number="8" name="delimiter.balanced.parenthesis.begin" />
-                	</starts-with>
-                	<ends-with>
-                		<expression>\)</expression>
-                	</ends-with>
-                	<subzones>
-                		<include collection="identifier.function.subzones" />
-                	</subzones>
-                </zone>
-                
-                
-                <!-- Var Functions -->
-                <zone name="identifier.function.support.var">
-                	<starts-with>
-                		<expression>(?i)\b((my\()</expression>
-                		<capture number="1" name="name" />
-                		<capture number="5" name="delimiter.balanced.parenthesis.begin" />
                 	</starts-with>
                 	<ends-with>
                 		<expression>\)</expression>

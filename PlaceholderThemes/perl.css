@@ -11,6 +11,12 @@
 perl {
 	spell-check: disabled;
 	color: #333;
+	background-color: #fff;
+}
+
+perl comment {
+  color: #888888;
+  font-weight: bold;
 }
 
 perl variable, string.double variable {
@@ -20,10 +26,9 @@ perl variable, string.double variable {
 
 perl variable > group {
 	color: #3482da;
-	background-color: #f2fbfe;
 }
 
-perl.definition{
+perl definition{
 	color: #d44950;
 }
 
@@ -42,7 +47,7 @@ perl include {
 	font-style: italic;
 }
 
-perl identifier.function {
+perl identifier function {
 	color: #699d36;
 	font-weight: bold;
 }
@@ -52,6 +57,11 @@ perl integer {
 	background-color: #fbf2fe;
 }
 
+perl string {
+    color: #ff00b9;
+  	background-color: #fff;
+}
+
 perl perlDoc.keyword {
-	color: #ad91ba;
+	background-color: #fff;
 }

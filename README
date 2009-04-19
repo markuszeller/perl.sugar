@@ -13,20 +13,6 @@ Of course you can install manually with git.
 git clone git://github.com/markuszeller/perl.sugar.git
 copy that file to ~/Library/Application Support/Espresso/Sugars/
 
-HISTORY
-=======
-Version 0.11
-+Fixed single quote syntax
-+Fixed heredoc syntax
-+Fixed XML errors
-+CSS makeup for better comments and friendlier for eyes
-+Fixed function parameters not alltime bold
-
-Version 0.10
-+Syntax highlighting is possible.
-+Not everything is completed, but works fine for the first use.
-+Current filetypes: .pl, .pm, .cgi
-
 CONTACT
 =======
 Blog: http://markuszeller.com

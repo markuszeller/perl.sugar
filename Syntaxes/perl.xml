@@ -29,43 +29,29 @@
 	        <include collection="keyword" />
 	    </collection>
 	    
-	    <!-- perlDoc -->
+	    <!-- Plain Old Documentation (POD) -->
 	    <collection name="metadata.comment.perlDoc">
 	        <zone name="metadata.comment.perlDoc.block">
 	            <starts-with>
-					<expression>^=</expression>
-					<capture number="1" name="delimiter.separator.slash.double-asterisk.comment.begin"/>
+					<expression>\A(=(?:pod|head[0-4]|over|item|back|begin|end|for|encoding|cut))\b</expression>
+					<capture number="1" name="metadata.comment.perlDoc.keyword"/>
 				</starts-with>
 				<ends-with>
-					<expression>^=cut</expression>
-					<capture number="1" name="delimiter.separator.single-asterisk.slash.comment.end"/>
+					<expression>\A(=cut)</expression>
+					<capture number="1" name="metadata.comment.perlDoc.keyword"/>
 				</ends-with>
 				<subzones>
-				    <zone name="metadata.comment.documentation.perlDoc.invalid.illegal.missing-asterisk">
-        	            <expression>^(?!\s*\*).*$\n?</expression>
-        	        </zone>
         	        <zone>
-        	    		<expression>^\s*\*\s*(@access)\s+((public|private|protected)|(.+))\s*$</expression>
+        	    		<expression>\A(=(?:pod|head[0-4]|over|item|back|begin|end|for|encoding|cut))\b</expression>
         	    		<capture number="1" name="metadata.comment.perlDoc.keyword"/>
-        	    		<capture number="3" name="metadata.comment.perlDoc.storage.modifier"/>
-        	    		<capture number="4" name="metadata.comment.perlDoc.invalid.illegal.wrong-access-typedoc"/>
         	    	</zone>
         	    	<zone name="metadata.comment.perlDoc.markup.underline.link">
         	    		<expression>((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:@a-zA-Z0-9_.~%+/?=&amp;#]+(?&lt;![.?:])</expression>
         	    	</zone>
-        	    	<zone>
-        	    		<expression>(@xlink)\s+(.+)\s*$</expression>
-        	    		<capture number="1" name="metadata.comment.perlDoc.keyword"/>
-        	    		<capture number="2" name="metadata.comment.perlDoc.markup.underline.link"/>
+        	    	<zone name="metadata.comment.perlDoc.markup.formattingCode">
+        	    	    <expression>([IBCLEFSXZ]&lt;[^&gt;]+&gt;)</expression>
         	    	</zone>
-        	    	<zone name="metadata.comment.perlDoc.keyword">
-        	    		<expression>\@(a(bstract|uthor)|c(ategory|opyright)|example|global|internal|li(cense|nk)|pa(ckage|ram)|return|s(ee|ince|tatic|ubpackage)|t(hrows|odo)|v(ar|ersion)|uses|deprecated|final)\b</expression>
-        	    	</zone>
-        	    	<zone name="metadata.comment.perlDoc.meta.tag.inlinedoc">
-        	    		<expression>\{(@(link)).+?\}</expression>
-        	    		<capture number="1" name="metadata.comment.perlDoc.keyword"/>
-        	    	</zone>
-				</subzones>
+        	    </subzones>
 			</zone>
 	    </collection>
 	    

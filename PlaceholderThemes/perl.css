@@ -62,6 +62,19 @@ perl string {
   	background-color: #fff;
 }
 
+perl comment.perlDoc {
+    font-weight: normal;
+}
+
 perl perlDoc.keyword {
-	background-color: #fff;
+	color: #889;
+}
+
+perl perlDoc.formattingCode {
+    color: #988;
+}
+
+perl perlDoc.markup.underline.link {
+   text-decoration: underline;
+   color: #889;
 }

@@ -63,6 +63,15 @@
 		</subrecipes>
 	</recipe>
 	
+	<recipe name="container.block.generic.hidden">
+	    <class>ESBaseItem</class>
+	    <start-selector>delimiter.balanced.curly-brace.begin</start-selector>
+	    <end-selector>delimiter.balanced.curly-brace.end</end-selector>
+	    <subrecipes>
+	    	<include-root-recipes />
+	    </subrecipes>
+	</recipe>
+	
 	<recipe name="container.block.hidden">
 		<class>ESBaseItem</class>
 		<start-selector>container.block > delimiter.balanced.parenthesis.begin</start-selector>
@@ -103,9 +112,10 @@
 		</subrecipes>
 	</recipe>
 	
+	<!-- Inline comment -->
 	<recipe name="built-in.comment">
 	    <class>ESCommentItem</class>
 	    <selector>comment.line</selector>
 	</recipe>
-	
+
 </itemizer>

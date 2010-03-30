@@ -78,7 +78,3 @@ perl perlDoc.markup.underline.link {
    text-decoration: underline;
    color: #889;
 }
-
-delimiter.balanced.curly-brace.begin {
-    color: #00f;
-}

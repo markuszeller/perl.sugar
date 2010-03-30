@@ -12,9 +12,12 @@ Contributed by I<James Sinclair>
 
 =cut
 
+# This is a multi-line comment
+# that has been created by putting
+# hashes at the start of each line
+
 #
 # Test subroutine/function definition
-
 sub my_function {
    my ($param1, $param2) = @_;
    
@@ -55,7 +58,6 @@ sub my_function {
 
 #
 # Another subroutine with lots of nesting
-
 sub function_number_two {
 
      # Nested IF statements
@@ -78,4 +80,19 @@ sub function_number_two {
      }
 
     return "Hello World\n";
+}
+
+
+#
+# Subroutine with hash references
+sub hashrefing_func {
+    my $b = 'b';
+    my $hash_ref = {
+        'a' => 1,
+        'b' => $b,
+        'c' => function_number_two()
+    };
+    
+    $hash_ref->{'d'} = $hash_ref->{'a'}
+                     . $hash_ref->{'b'};
 }

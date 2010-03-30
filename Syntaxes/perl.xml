@@ -350,64 +350,9 @@
         
         <!-- Containers -->
         <collection name="container.function">
-            <zone name="container.function.magic.parenthesis-delimited">
-                <starts-with>
-                    <expression>((?:(?:final|public|private|protected)\s+)*)(sub)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|sleep|autoload))|(__[a-zA-Z0-9_]+))\s*(\()</expression>
-                    <capture number="1" name="keyword.modifier.scope" />
-                    <capture number="2" name="keyword.definition.function.begin" />
-                    <capture number="4" name="name" />
-                    <capture number="6" name="delimiter.balanced.parenthesis.parameters.function.begin" />
-                </starts-with>
-                <ends-with>
-                    <expression>\)</expression>
-                    <capture number="0" name="delimiter.balanced.parenthesis.parameters.function.end" />
-                </ends-with>
-                <subzones>
-                    <zone name="identifier.variable.parameter">
-        		        <expression>(?x)(\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?\b</expression>
-        		        <capture number="1" name="delimiter.variable.begin" />
-        		    </zone>
-        		      <include collection="metadata.comment" />
-        	        <include collection="literal.collection" />
-        	        <include collection="literal.keyword" />
-        	        <include collection="keyword" />
-        	        <include collection="identifier.class" />
-        	        <include collection="identifier.variable" />
-        	        <include collection="literal.string" />
-        	        <include collection="literal.numeric" />
-        		      <include collection="operator" />
-        		      <include collection="delimiter" />
-                </subzones>
-            </zone>
-            
-            <zone name="container.function.parenthesis-delimited">
-                <starts-with>
-                    <expression>((?:(?:final|public|private|protected)\s+)*)(sub)(?:\s+|(\s*&amp;\s*))(?:(__(?:call|(?:con|de)struct|get|(?:is|un)?set|sleep|autoload))|([a-zA-Z0-9_]+))\s*(\()</expression>
-                    <capture number="1" name="keyword.modifier.scope" />
-                    <capture number="2" name="keyword.definition.function.begin" />
-                    <capture number="5" name="name" />
-                    <capture number="6" name="delimiter.balanced.parenthesis.parameters.function.begin" />
-                </starts-with>
-                <ends-with>
-                    <expression>\)</expression>
-                    <capture number="0" name="delimiter.balanced.parenthesis.parameters.function.end" />
-                </ends-with>
-                <subzones>
-                    <zone name="identifier.variable.parameter">
-        		        <expression>(?x)(\$+)[a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*?\b</expression>
-        		        <capture number="1" name="delimiter.variable.begin" />
-        		    </zone>
-        		      <include collection="metadata.comment" />
-        	        <include collection="literal.collection" />
-        	        <include collection="literal.keyword" />
-        	        <include collection="keyword" />
-        	        <include collection="identifier.class" />
-        	        <include collection="identifier.variable" />
-        	        <include collection="literal.string" />
-        	        <include collection="literal.numeric" />
-        		      <include collection="operator" />
-        		      <include collection="delimiter" />
-                </subzones>
+            <zone name="container.function.definition">
+                <expression>\bsub\s+([A-Za-z_][A-Za-z_0-9]*)\s*(?:\:\s*(?:[A-Za-z_][A-Za-z_0-9]*[, ]?)+)?\s*</expression>
+                <capture number="1" name="name" />
             </zone>
         </collection>
         
@@ -459,7 +404,6 @@
             <zone name="container.block.else">
                 <expression>(\belse\b)</expression>
                 <capture number="1" name="keyword.control.flow.else" />
-                <capture number="2" name="delimiter.balanced.parenthesis.condition.begin" />
             </zone>
             <zone name="container.block.foreach">
                 <starts-with>
@@ -480,7 +424,7 @@
             </zone>
             <zone name="container.block.for">
                 <starts-with>
-                    <expression>(\bfor\b)\s*(\()</expression>
+                    <expression>\b(for(?:each)?)\b\s*(?:(?:my\s*)?\$(?:[A-Za-z_][A-Za-z_0-9]*))?\s*(\()</expression>
                     <capture number="1" name="keyword.control.flow.for" />
                     <capture number="2" name="delimiter.balanced.parenthesis.condition.begin" />
                 </starts-with>

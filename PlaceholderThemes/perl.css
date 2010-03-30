@@ -16,7 +16,7 @@ perl {
 
 perl comment {
   color: #888888;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 perl variable, string.double variable {
@@ -77,4 +77,8 @@ perl perlDoc.formattingCode {
 perl perlDoc.markup.underline.link {
    text-decoration: underline;
    color: #889;
+}
+
+delimiter.balanced.curly-brace.begin {
+    color: #00f;
 }

@@ -39,6 +39,11 @@ sub my_function {
        $j = 10 - $i;
    }
    
+   # FOREACH loop
+   for my $i (1..10) {
+       $j = 10 - $i;
+   }
+   
    # Define an anonymous function within a function
    my $anon_func = sub {
        my $param = $_;
@@ -46,4 +51,31 @@ sub my_function {
        return $param;
    }
    
+}
+
+#
+# Another subroutine with lots of nesting
+
+sub function_number_two {
+
+     # Nested IF statements
+     if (1 == 1) {
+         if (2 != 3) {
+             # It truly is amazing
+         }
+     }
+     
+     # Nested FOR statments
+     for my $a (1..10) {
+        foreach my $b (1..20) {
+            # Nest level 2
+        }
+     }
+     
+     # Nested function definition
+     sub sub_sub_func {
+         return 'Found the sub function';
+     }
+
+    return "Hello World\n";
 }

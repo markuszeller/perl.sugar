@@ -12,7 +12,7 @@
 	<library>
 	    <!-- Includes all other collections -->
 	    <collection name="language">
-	        <include collection="metadata.comment.perlDoc" />
+	        <include collection="metadata.comment.documentation" />
 	        <include collection="metadata.comment" />
 	        <include collection="literal.collection" />
 	        <include collection="container.class" />
@@ -24,31 +24,32 @@
 	        <include collection="literal.keyword" />
 	        <include collection="literal.string" />
 	        <include collection="literal.numeric" />
+	        <include collection="literal.regex"/>
 	        <include collection="delimiter" />
 	        <include collection="operator" />
 	        <include collection="keyword" />
 	    </collection>
 	    
 	    <!-- Plain Old Documentation (POD) -->
-	    <collection name="metadata.comment.perlDoc">
-	        <zone name="metadata.comment.perlDoc.block">
+	    <collection name="metadata.comment.documentation">
+	        <zone name="metadata.comment.documentation.block">
 	            <starts-with>
 					<expression>\A(=(?:pod|head[0-4]|over|item|back|begin|end|for|encoding|cut))\b</expression>
-					<capture number="1" name="metadata.comment.perlDoc.keyword"/>
+					<capture number="1" name="metadata.comment.documentation.keyword"/>
 				</starts-with>
 				<ends-with>
 					<expression>\A(=cut)</expression>
-					<capture number="1" name="metadata.comment.perlDoc.keyword"/>
+					<capture number="1" name="metadata.comment.documentation.keyword"/>
 				</ends-with>
 				<subzones>
         	        <zone>
         	    		<expression>\A(=(?:pod|head[0-4]|over|item|back|begin|end|for|encoding|cut))\b</expression>
-        	    		<capture number="1" name="metadata.comment.perlDoc.keyword"/>
+        	    		<capture number="1" name="metadata.comment.documentation.keyword"/>
         	    	</zone>
-        	    	<zone name="metadata.comment.perlDoc.markup.underline.link">
+        	    	<zone name="metadata.comment.documentation.markup.underline.link">
         	    		<expression>((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:@a-zA-Z0-9_.~%+/?=&amp;#]+(?&lt;![.?:])</expression>
         	    	</zone>
-        	    	<zone name="metadata.comment.perlDoc.markup.formattingCode">
+        	    	<zone name="metadata.comment.documentation.markup.formattingCode">
         	    	    <expression>([IBCLEFSXZ]&lt;[^&gt;]+&gt;)</expression>
         	    	</zone>
         	    </subzones>
@@ -205,6 +206,124 @@
 	        </zone>
 	    </collection>
 	    
+	    <collection name="literal.regex">
+	      <!-- /regular expression/ -->
+	      <zone name="literal.regex">
+	        <starts-with>
+	          <expression>m?(/)</expression>
+	          <capture number="0" name="delimiter.balanced.slash.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(/)([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.slash.end"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	      
+	      <zone name="literal.regex.replace">
+	          <starts-with>
+	              <expression>\b(s|tr|y)\s*([^A-Za-z0-9\s])</expression>
+	              <capture number="1" name="keyword.function.perl"/>
+	              <capture number="2" name="keyword.control.other.delimiter.regexp"/>
+	          </starts-with>
+	          <ends-with>
+	              <expression>(\2)(.*?)(?&lt;!\\)(\\{2})*(\2)([iomxneusg]*)</expression>
+	              <capture number="1" name="keyword.control.other.delimiter.regexp"/>
+	              <capture number="2" name="literal.regex.replace.replace-part"/>
+	              <capture number="3" name="literal.regex.replace.replace-part"/>
+	              <capture number="4" name="keyword.control.other.delimiter.regexp"/>
+	              <capture number="5" name="literal.regex.modifier"/>
+	          </ends-with>
+	          <subzones>
+	            <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	          </subzones>
+	      </zone>
+	      
+	      <zone name="literal.regex.percent-delimited.interpolated.parenthesis">
+	        <starts-with>
+	          <expression>(%)(r)(\()</expression>
+	          <capture number="1" name="delimiter.literal.percent-delimiter"/>
+	          <capture number="2" name="delimiter.literal.percent-delimited.qualifier"/>
+	          <capture number="3" name="delimiter.balanced.percent-delimited.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(\))([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.percent-delimited.begin"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	      <zone name="literal.regex.percent-delimited.interpolated.square-brace">
+	        <starts-with>
+	          <expression>(%)(r)(\[)</expression>
+	          <capture number="1" name="delimiter.literal.percent-delimiter"/>
+	          <capture number="2" name="delimiter.literal.percent-delimited.qualifier"/>
+	          <capture number="3" name="delimiter.balanced.percent-delimited.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(\])([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.percent-delimited.begin"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	      <zone name="literal.regex.percent-delimited.interpolated.curly-brace">
+	        <starts-with>
+	          <expression>(%)(r)(\{)</expression>
+	          <capture number="1" name="delimiter.literal.percent-delimiter"/>
+	          <capture number="2" name="delimiter.literal.percent-delimited.qualifier"/>
+	          <capture number="3" name="delimiter.balanced.percent-delimited.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(\})([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.percent-delimited.begin"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	      <zone name="literal.regex.percent-delimited.interpolated.angle-brace">
+	        <starts-with>
+	          <expression>(%)(r)(\&lt;)</expression>
+	          <capture number="1" name="delimiter.literal.percent-delimiter"/>
+	          <capture number="2" name="delimiter.literal.percent-delimited.qualifier"/>
+	          <capture number="3" name="delimiter.balanced.percent-delimited.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(\&gt;)([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.percent-delimited.begin"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	      <zone name="literal.regex.percent-delimited.interpolated">
+	        <starts-with>
+	          <expression>(%)(r)([`~!@#$%^&amp;*-_=+\|'";:.,/?])</expression>
+	          <capture number="1" name="delimiter.literal.percent-delimiter"/>
+	          <capture number="2" name="delimiter.literal.percent-delimited.qualifier"/>
+	          <capture number="3" name="delimiter.balanced.percent-delimited.begin"/>
+	        </starts-with>
+	        <ends-with>
+	          <expression>(\3)([iomxneus]*)</expression>
+	          <capture number="1" name="delimiter.balanced.percent-delimited.begin"/>
+	          <capture number="2" name="literal.regex.modifier"/>
+	        </ends-with>
+	        <subzones>
+	          <include syntax="name.elliottcable.Espresso.Syntax.Expression.Regex"/>
+	        </subzones>
+	      </zone>
+	    </collection>
+	    
 		<!-- Keywords -->
 
 		<collection name="keyword">
@@ -267,6 +386,10 @@
 		    <zone name="identifier.variable.array">
 		        <expression>(\@)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)</expression>
 		        <capture number="1" name="operator.atat-sign.variable.begin" />
+		    </zone>
+		    <zone name="identifier.variable.array-last-index">
+		        <expression>(\$)(\#)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)</expression>
+		        <capture number="1" name="operator.dollar-sign.variable.begin" />
 		    </zone>
 		    <zone name="identifier.variable.function">
 		        <expression>(\&amp;)([a-zA-Z_\x{7f}-\x{ff}][a-zA-Z0-9_\x{7f}-\x{ff}]*)</expression>

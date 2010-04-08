@@ -55,6 +55,9 @@ sub my_function {
         return $param;
     };
 
+    # Backticks
+    `echo "Hello world"`
+
 }
 
 #
@@ -103,10 +106,10 @@ sub hashrefing_func {
 sub list_func {
     my @list_var = ( 'a', 'b', 'c' );
     my $last_idx = $#list_var;
-    
-    if ($last_idx =~ /^\#/xsm) {
+
+    if ( $last_idx =~ /^\#/xsm ) {
         print "Starts with a hash";
     }
-    
-    ($last_idx =~ /\d+/xsm); # A normal regular expression
+
+    ( $last_idx =~ /\d+/xsm );    # A normal regular expression
 }

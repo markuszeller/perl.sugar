@@ -88,6 +88,20 @@
                 </subzones>
             </zone>
             
+            <zone name="literal.string.backtick">
+                <starts-with>
+                    <expression>`</expression>
+                    <capture number="0" name="delimiter.balanced.backtick.begin"/>
+                </starts-with>
+                <ends-with>
+                    <expression>`</expression>
+                    <capture number="0" name="delimiter.balanced.backtick.end"/>
+                </ends-with>
+                <subzones>
+                    <include collection="identifier.variable" />
+                </subzones>
+            </zone>
+            
             <zone name="literal.string.quoted.double">
                 <starts-with>
                     <expression>"</expression>
@@ -116,6 +130,7 @@
                     <expression>\2</expression>
                 </starts-with>
             </zone>
+            
 	    </collection>
 	    
         <collection name="literal.numeric">

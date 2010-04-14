@@ -562,9 +562,11 @@
             </zone>
             <zone name="container.block.for">
                 <starts-with>
-                    <expression>\b(for(?:each)?)\b\s*(?:(?:my\s*)?\$(?:[A-Za-z_][A-Za-z_0-9]*))?\s*(\()</expression>
+                    <expression>\b(for(?:each)?)\b\s*(?:(my)?\s*(\$[A-Za-z_][A-Za-z_0-9]*))?\s*(\()</expression>
                     <capture number="1" name="keyword.control.flow.for" />
-                    <capture number="2" name="delimiter.balanced.parenthesis.condition.begin" />
+                    <capture number="2" name="kewyord.modifier.scope" />
+                    <capture number="3" name="identifier.variable.local" />
+                    <capture number="4" name="delimiter.balanced.parenthesis.condition.begin" />
                 </starts-with>
                 <ends-with>
                     <expression>\)</expression>

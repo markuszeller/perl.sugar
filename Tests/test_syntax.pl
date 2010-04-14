@@ -56,7 +56,7 @@ sub my_function {
     };
 
     # Backticks
-    `echo "Hello world"`
+    `echo "Hello world"`;
 
 }
 
@@ -67,7 +67,6 @@ sub function_number_two {
     # Nested IF statements
     if ( 1 == 1 ) {
         if ( 2 != 3 ) {
-
             # It truly is amazing
         }
     }
@@ -75,7 +74,6 @@ sub function_number_two {
     # Nested FOR statments
     for my $a ( 1 .. 10 ) {
         foreach my $b ( 1 .. 20 ) {
-
             # Nest level 2
         }
     }

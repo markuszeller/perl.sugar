@@ -8,15 +8,10 @@
 	background-color: #fff;
 }
 
+
 perl {
 	spell-check: disabled;
 	color: #333;
-	background-color: #fff;
-}
-
-perl comment {
-  color: #888888;
-  /*font-weight: bold;*/
 }
 
 perl variable, string.double variable {
@@ -57,24 +52,24 @@ perl integer {
 	background-color: #fbf2fe;
 }
 
-perl string {
-    color: #ff00b9;
-  	background-color: #fff;
+perl literal.string {
+	color: #bc670f;
+	background-color: rgba(251,233,173,0.1);
 }
 
-perl comment.perlDoc {
+perl comment.documentation {
     font-weight: normal;
 }
 
-perl perlDoc.keyword {
-	color: #889;
+perl metadata.comment.documentation.keyword {
+	color: #779;
 }
 
-perl perlDoc.formattingCode {
-    color: #988;
+perl metadata.comment.documentation.formattingCode {
+    color: #977;
 }
 
-perl perlDoc.markup.underline.link {
+perl documentation.markup.underline.link {
    text-decoration: underline;
-   color: #889;
+   color: #779;
 }
